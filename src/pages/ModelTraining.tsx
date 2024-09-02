@@ -589,7 +589,7 @@ export default function ModelTraining() {
                     <Typography>
                         Create your own using the{' '}
                         <Link
-                            href="https://github.com/agri-gaia/train-container-template"
+                            href="https://github.com/hsos-ai-lab/agri-gaia-train-container-template"
                             target="_blank"
                             rel="noreferrer"
                         >
