@@ -11,7 +11,6 @@
 
 import { TaskStatusType } from './TaskStatus';
 
-
 export interface IBackgroundTask {
     id: number;
     initiator: string;

@@ -10,10 +10,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 export default class GeonamesLocation {
-    name: string
-    uri : string
+    name: string;
+    uri: string;
 
-    constructor(name : string, uri : string){
+    constructor(name: string, uri: string) {
         this.name = name;
         this.uri = uri;
     }

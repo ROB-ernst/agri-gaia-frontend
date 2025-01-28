@@ -30,7 +30,6 @@ import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/Check';
 import Typography from '@mui/material/Typography';
 
-
 import { CONTAINER_IMAGES_PATH } from '../../endpoints';
 
 export default function ({ handleClose, onDownload }: { handleClose: () => void; onDownload: () => void }) {
@@ -42,9 +41,9 @@ export default function ({ handleClose, onDownload }: { handleClose: () => void;
     const [containerImageName, setContainerImageName] = useState<string>('nginxdemos/hello');
     const [containerImageTag, setContainerImageTag] = useState<string>('latest');
     const [containerImageArch, setContainerImageArch] = useState<string>('linux/amd64');
-    
+
     const [useDifferentImageName, setUseDifferentImageName] = useState<boolean>(false);
-    const [containerImageNamePlattform, setContainerImageNamePlattform] = useState<string>("hello");
+    const [containerImageNamePlattform, setContainerImageNamePlattform] = useState<string>('hello');
     const [containerImageTagPlattform, setContainerImageTagPlattform] = useState<string>('latest');
 
     const [downloadInProgress, setDownloadInProgresss] = useState(false);
@@ -54,7 +53,7 @@ export default function ({ handleClose, onDownload }: { handleClose: () => void;
 
     const fetchUsername = async () => {
         if (keycloak?.authenticated && username === undefined) {
-            keycloak.loadUserProfile().then((profile: {username?: string}) => {
+            keycloak.loadUserProfile().then((profile: { username?: string }) => {
                 setUsername(profile.username);
             });
         }
@@ -89,24 +88,18 @@ export default function ({ handleClose, onDownload }: { handleClose: () => void;
         setDownloadSuccess(false);
         setDownloadInProgresss(true);
 
-        const repositoryNameEscaped = containerImageName.replaceAll('/','___',)
-        const imageArchEscaped = containerImageArch.replaceAll('/', '_')
+        const repositoryNameEscaped = containerImageName.replaceAll('/', '___');
+        const imageArchEscaped = containerImageArch.replaceAll('/', '_');
 
         const reqParams = new URLSearchParams();
-        reqParams.append("target_repository", containerImageNamePlattform);
-        reqParams.append("target_tag", containerImageTagPlattform);
+        reqParams.append('target_repository', containerImageNamePlattform);
+        reqParams.append('target_tag', containerImageTagPlattform);
 
         const path = `${CONTAINER_IMAGES_PATH}/download/${repositoryNameEscaped}/${containerImageTag}/${imageArchEscaped}?${reqParams}`;
 
-        httpPost(
-            keycloak,
-            path,
-            undefined,
-            undefined,
-            true,
-        )
-            .then(({headers}) => {
-                httpGet(keycloak, headers.get("Location"))
+        httpPost(keycloak, path, undefined, undefined, true)
+            .then(({ headers }) => {
+                httpGet(keycloak, headers.get('Location'))
                     .then((task) => tasks?.addServerBackgroundTask(keycloak, tasks, task, () => onDownload()))
                     .catch(console.error);
                 setErrorMsg(undefined);
@@ -145,7 +138,7 @@ export default function ({ handleClose, onDownload }: { handleClose: () => void;
     const handleContainerImageNameChange = (name: string) => {
         setContainerImageName(name);
         if (!useDifferentImageName) {
-            const repo_parts = name.split("/");
+            const repo_parts = name.split('/');
             if (repo_parts.length > 1) {
                 setContainerImageNamePlattform(repo_parts[1]);
             } else {
@@ -153,7 +146,7 @@ export default function ({ handleClose, onDownload }: { handleClose: () => void;
             }
         }
     };
-    
+
     const handleContainerImageTagChange = (tag: string) => {
         setContainerImageTag(tag);
         if (!useDifferentImageName) {
@@ -164,15 +157,15 @@ export default function ({ handleClose, onDownload }: { handleClose: () => void;
     const handleUseDifferentImageNameChange = (checked: boolean) => {
         setUseDifferentImageName(checked);
         if (!checked) {
-            const repo_parts = containerImageName.split("/");
+            const repo_parts = containerImageName.split('/');
             if (repo_parts.length > 1) {
                 setContainerImageNamePlattform(repo_parts[1]);
             } else {
                 setContainerImageNamePlattform(repo_parts[0]);
             }
-            setContainerImageTagPlattform(containerImageTag)
+            setContainerImageTagPlattform(containerImageTag);
         }
-    }
+    };
 
     return (
         <Dialog open={true} onClose={onClose} fullWidth maxWidth="sm">
@@ -225,12 +218,14 @@ export default function ({ handleClose, onDownload }: { handleClose: () => void;
                     </Grid>
                     <Grid item>
                         <FormControlLabel
-                            control={<Checkbox
-                                id="different-image-name-checkbox"
-                                checked={useDifferentImageName} // Set to true or false based on the checked state
-                                onChange={e => handleUseDifferentImageNameChange(e.target.checked)} // Provide a function to handle the onChange event
-                                color="primary" // Specify the color of the checkbox
-                            />}
+                            control={
+                                <Checkbox
+                                    id="different-image-name-checkbox"
+                                    checked={useDifferentImageName} // Set to true or false based on the checked state
+                                    onChange={(e) => handleUseDifferentImageNameChange(e.target.checked)} // Provide a function to handle the onChange event
+                                    color="primary" // Specify the color of the checkbox
+                                />
+                            }
                             label="Use different image name"
                         />
                     </Grid>
@@ -238,8 +233,8 @@ export default function ({ handleClose, onDownload }: { handleClose: () => void;
                         <Grid container direction="row" spacing={1} mt={2} sx={{ height: '55px' }}>
                             <Grid item xs={7}>
                                 <Stack direction="row">
-                                    <Box sx={{ display: 'flex', alignItems: 'end'}}>
-                                        <Typography pb={"4px"}>{username ? `${username}/` : 'N/A /'}</Typography>
+                                    <Box sx={{ display: 'flex', alignItems: 'end' }}>
+                                        <Typography pb={'4px'}>{username ? `${username}/` : 'N/A /'}</Typography>
                                     </Box>
                                     <TextField
                                         id="name-plattform-textfield"

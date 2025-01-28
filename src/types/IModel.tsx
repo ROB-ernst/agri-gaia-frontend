@@ -30,43 +30,41 @@ export default interface IModel {
 }
 
 export const TENSOR_DATATYPES = [
-    "float16",
-    "float32",
-    "float64",
-    "int8",
-    "int16",
-    "int32",
-    "int64",
-    "uint8",
-    "uint16",
-    "uint32",
-    "uint64",
-    "bool",
-    "string"
-].map((element) => ({value: element, label: element}))
+    'float16',
+    'float32',
+    'float64',
+    'int8',
+    'int16',
+    'int32',
+    'int64',
+    'uint8',
+    'uint16',
+    'uint32',
+    'uint64',
+    'bool',
+    'string',
+].map((element) => ({ value: element, label: element }));
 
-export const INPUT_TENSOR_SHAPE_SEMANTICS = [
-    "HWC",
-    "NHWC",
-    "CHW",
-    "NCHW"
-].map((element) => ({value: element, label: element}))
+export const INPUT_TENSOR_SHAPE_SEMANTICS = ['HWC', 'NHWC', 'CHW', 'NCHW'].map((element) => ({
+    value: element,
+    label: element,
+}));
 
 export const MODEL_FORMATS = [
     {
-        value: "onnx",
-        label: "ONNX"
+        value: 'onnx',
+        label: 'ONNX',
     },
     {
-        value: "pytorch",
-        label: "Pytorch"
+        value: 'pytorch',
+        label: 'Pytorch',
     },
     {
-        value: "tensorflow",
-        label: "Tensorflow"
+        value: 'tensorflow',
+        label: 'Tensorflow',
     },
     {
-        value: "tensorrt",
-        label: "TensorRT"
-    }
-]
+        value: 'tensorrt',
+        label: 'TensorRT',
+    },
+];

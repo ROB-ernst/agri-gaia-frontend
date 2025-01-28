@@ -28,15 +28,14 @@ import { httpPatch } from '../../api';
 import { MODELS_PATH } from '../../endpoints';
 import { getLocalDateTime } from '../../util';
 
-
 const reNonEmptyArray = /^\[(?:\d+,\s?)*\d+\]$/;
 const validateShapeString = (shapeString: string) => {
     return reNonEmptyArray.test(shapeString);
 };
 
 const validateSemanticsMatchesShape = (semantics: string | undefined, shapeString: string | undefined) => {
-    return semantics?.length == shapeString?.split(",").length
-}
+    return semantics?.length == shapeString?.split(',').length;
+};
 
 const tensorShapeToString = (shape: number[] | undefined) => {
     if (!shape) {
@@ -86,7 +85,7 @@ const GridRow = ({
         select: false,
     };
     if (errorState) {
-        textFieldConfig.helperText = errorMessage;//'Eingabe in JSON-Array Syntax, z.B. [32, 32, 3].';
+        textFieldConfig.helperText = errorMessage; //'Eingabe in JSON-Array Syntax, z.B. [32, 32, 3].';
         textFieldConfig.error = true;
     }
     if (selectionOptions) {
@@ -179,15 +178,13 @@ export default function ModelDetailsGrid(props: {
     };
 
     const save = () => {
-
         const errorStates = [inputShapeErrorState, outputShapeErrorState, inputSemanticsErrorState];
-        if (errorStates.some(state => state === true)) {
+        if (errorStates.some((state) => state === true)) {
             setSnackbarMessage({
-                message: "Some inputs contain errors",
-                severity: "error",
+                message: 'Some inputs contain errors',
+                severity: 'error',
                 open: true,
-            }
-            );
+            });
             return;
         }
 

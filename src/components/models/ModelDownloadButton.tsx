@@ -21,7 +21,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import { MODELS_PATH } from '../../endpoints';
 import { downloadBlob } from '../../util';
 
-export default function ({ modelId }: { modelId: number}) {
+export default function ({ modelId }: { modelId: number }) {
     const keycloak = useKeycloak();
 
     const [isDownloading, setIsDownloading] = useState(false);

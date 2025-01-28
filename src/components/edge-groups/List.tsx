@@ -49,7 +49,11 @@ export default function EdgeGroupList({ edgeGroups, tags, refreshCallback }: IEd
                                 </TableCell>
                                 <TableCell>{group.deviceCount}</TableCell>
                                 <TableCell align="right">
-                                    <EdgeGroupDeleteButton edgeGroupId={group.id} edgeGroupName={group.name} onDelete={refreshCallback}/>
+                                    <EdgeGroupDeleteButton
+                                        edgeGroupId={group.id}
+                                        edgeGroupName={group.name}
+                                        onDelete={refreshCallback}
+                                    />
                                 </TableCell>
                             </TableRow>
                         ))}

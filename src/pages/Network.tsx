@@ -13,7 +13,6 @@ import { useEffect, useState, Fragment } from 'react';
 import { httpGet } from '../api';
 import useKeycloak from '../contexts/KeycloakContext';
 
-
 import AddIcon from '@mui/icons-material/Add';
 import SyncIcon from '@mui/icons-material/Sync';
 import InfoIcon from '@mui/icons-material/Info';
@@ -23,7 +22,7 @@ import Fab from '@mui/material/Fab';
 
 import { NETWORK_PATH } from '../endpoints';
 
-import ConnectorList from '../components/networkmanagment/List'
+import ConnectorList from '../components/networkmanagment/List';
 import NoDataYet from '../components/common/NoDataYet';
 import IConnector from '../types/IConnector';
 import AddConnectorDialog from '../components/networkmanagment/AddConnectorDialog';
@@ -46,19 +45,19 @@ export default function Network() {
     const [connectorAvailable, setConnectorAvailable] = useState<boolean>(false);
 
     useEffect(() => {
-        httpGet(keycloak, NETWORK_PATH+"/info")
-            .then((result) => {  
-                setConnectorAvailable(result["available"])
-                const record = {"X-Api-Key": result["password"]}
-                httpGet(keycloak, result["connector_data_url"]+"/assets", record)
+        httpGet(keycloak, NETWORK_PATH + '/info')
+            .then((result) => {
+                setConnectorAvailable(result['available']);
+                const record = { 'X-Api-Key': result['password'] };
+                httpGet(keycloak, result['connector_data_url'] + '/assets', record)
                     .then(() => {
                         setOwnInformation(result);
-                        setLoading(true)
-                        fetchConnectors(result)
+                        setLoading(true);
+                        fetchConnectors(result);
                     })
                     .catch((error) => {
-                        console.log(error)
-                    })
+                        console.log(error);
+                    });
             })
             .catch((error) => {
                 console.error(error);
@@ -66,17 +65,17 @@ export default function Network() {
     }, [keycloak, trigger]);
 
     const fetchConnectors = (own_info: any) => {
-        setLoading(true)
+        setLoading(true);
         httpGet(keycloak, NETWORK_PATH)
             .then((connectors: IConnector[]) => {
-                connectors.forEach(function (connector){
-                    contracts[connector.id] = []
-                    connector.folded = true
-                    fetchAssets(connector, own_info)
-                })  
+                connectors.forEach(function (connector) {
+                    contracts[connector.id] = [];
+                    connector.folded = true;
+                    fetchAssets(connector, own_info);
+                });
                 connectors.sort((a, b) => a.name.localeCompare(b.name));
                 setConnectors(connectors);
-                setLoading(false)
+                setLoading(false);
             })
             .catch((error) => {
                 console.error(error);
@@ -84,18 +83,19 @@ export default function Network() {
     };
 
     const fetchAssets = (connector: IConnector, own_info: any) => {
-        const record = {"X-Api-Key": own_info["password"]}
-        httpGet(keycloak, own_info["connector_data_url"]+"/catalog?providerUrl="+connector.ids_url, record).then((result) => {
-            contracts[connector.id] = result["contractOffers"]
-        })
-            .catch((error) => {
-                console.log("Not available")
+        const record = { 'X-Api-Key': own_info['password'] };
+        httpGet(keycloak, own_info['connector_data_url'] + '/catalog?providerUrl=' + connector.ids_url, record)
+            .then((result) => {
+                contracts[connector.id] = result['contractOffers'];
             })
+            .catch((error) => {
+                console.log('Not available');
+            });
     };
 
     const forceRerender = () => {
-        setTrigger(!trigger)
-    }
+        setTrigger(!trigger);
+    };
 
     const handleAddDialogOpen = () => {
         setAddDialogOpen(true);
@@ -123,14 +123,20 @@ export default function Network() {
     };
 
     const isLoading = () => {
-        return loading
-    }
+        return loading;
+    };
 
     return (
         <>
-            {addDialogOpen ? <AddConnectorDialog handleClose={handleAddDialogClose} ownInformation={ownInformation} /> : null}
-            {infoDialogOpen ? <AssetDetailDialog handleClose={handleInfoDialogClose} asset={chosenContract} connector={connector} /> : null}
-            {connectorDetailDialogOpen ? <ConnectorDetailDialog handleClose={handleConnectorDetailDialogClose} ownInformation={ownInformation}/> : null}
+            {addDialogOpen ? (
+                <AddConnectorDialog handleClose={handleAddDialogClose} ownInformation={ownInformation} />
+            ) : null}
+            {infoDialogOpen ? (
+                <AssetDetailDialog handleClose={handleInfoDialogClose} asset={chosenContract} connector={connector} />
+            ) : null}
+            {connectorDetailDialogOpen ? (
+                <ConnectorDetailDialog handleClose={handleConnectorDetailDialogClose} ownInformation={ownInformation} />
+            ) : null}
             {connectorAvailable ? (
                 <div>
                     <Grid container justifyContent="space-between">
@@ -178,7 +184,7 @@ export default function Network() {
                             </Grid>
                         </Grid>
                     </Grid>
-                    
+
                     <ConnectorList
                         connectors={connectors}
                         contracts={contracts}
@@ -191,12 +197,16 @@ export default function Network() {
 
                     <NoDataYet data={connectors} name="Connected Participants" />
                 </div>
-            ):<Fragment>
-            It seems, the EDC was not started correctly.<br/>
-            Please contact your platform administrator for detailed information.<br/>
-            More detailed information on the configuration can be found here: https://github.com/agri-gaia/dev-docs-platform-lmis-bosch/blob/main/docs/edc-deployment.md
-            </Fragment>
-            }
+            ) : (
+                <Fragment>
+                    It seems, the EDC was not started correctly.
+                    <br />
+                    Please contact your platform administrator for detailed information.
+                    <br />
+                    More detailed information on the configuration can be found here:
+                    https://github.com/agri-gaia/dev-docs-platform-lmis-bosch/blob/main/docs/edc-deployment.md
+                </Fragment>
+            )}
         </>
     );
 }

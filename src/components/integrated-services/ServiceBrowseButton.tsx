@@ -21,8 +21,6 @@ import { openInNewTab } from '../../util';
 import IIntegratedService from '../../types/IIntegratedService';
 
 export default function ({ service }: { service: IIntegratedService }) {
-
-
     const openService = async () => {
         const datasetPrefix = `services/${service.name}`;
         const base64encodedPrefix = Buffer.from(datasetPrefix).toString('base64');

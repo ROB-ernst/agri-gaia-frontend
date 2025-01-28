@@ -26,24 +26,24 @@ const JsonSchema_string_binary = (props: any) => {
 
     const [alignment, setAlignment] = React.useState('minio');
 
-    const selectedFile = props.value ||''
-    let errors = props.errors
-    errors = errors.toJS ? errors.toJS() : []
+    const selectedFile = props.value || '';
+    let errors = props.errors;
+    errors = errors.toJS ? errors.toJS() : [];
 
     const handleChange = (event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
         setAlignment(newAlignment);
     };
 
     const handleMinIOSelection = (v: string) => {
-        const filepath = encodeURIComponent(v)
-        const filename_split = v.split('/')
-        const filename = filename_split[filename_split.length - 1]
+        const filepath = encodeURIComponent(v);
+        const filename_split = v.split('/');
+        const filename = filename_split[filename_split.length - 1];
 
         httpGet(keycloak, `${INTEGRATED_SERVICES_PATH}/file/` + encodeURIComponent(filepath))
             .then((response) => {
                 console.log(response);
-                const file = new File([response], filename)
-                props.onChange(file, props.keyName)
+                const file = new File([response], filename);
+                props.onChange(file, props.keyName);
             })
             .catch((error) => {
                 if (error.body == undefined || error.body == null) {
@@ -77,20 +77,19 @@ const JsonSchema_string_binary = (props: any) => {
                         multiple={false}
                         onChange={(file) => props.onChange(file[0], props.keyName)}
                     />
-                ) : <MinIOFileSelector
-                    onClose={(selectedFiles: string[]) =>
-                        handleMinIOSelection(selectedFiles.toString())
-                    }
-                    multiSelect={undefined}
-                />}
+                ) : (
+                    <MinIOFileSelector
+                        onClose={(selectedFiles: string[]) => handleMinIOSelection(selectedFiles.toString())}
+                        multiSelect={undefined}
+                    />
+                )}
             </div>
         </>
     );
-}
-
+};
 
 export const FileSelectorPlugin = {
     components: {
         JsonSchema_string_binary: JsonSchema_string_binary,
-    }
-}
+    },
+};

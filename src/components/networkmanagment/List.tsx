@@ -31,20 +31,28 @@ import ConnectorDeleteButton from './ConnectorDeleteButton';
 import IConnectorListProps from '../../types/IConnectorListProps';
 import IConnector from '../../types/IConnector';
 
-export default function ({ connectors, contracts, onDelete, loading, setChosenContract, handleInfoDialogOpen, setConnector }: IConnectorListProps) {
+export default function ({
+    connectors,
+    contracts,
+    onDelete,
+    loading,
+    setChosenContract,
+    handleInfoDialogOpen,
+    setConnector,
+}: IConnectorListProps) {
     const [open, setOpen] = useState(false);
 
-    const toggleFolded = (row : IConnector) => {
-        row.folded = !row.folded
-        setOpen(!open)
+    const toggleFolded = (row: IConnector) => {
+        row.folded = !row.folded;
+        setOpen(!open);
     };
 
-    const openInfoDialog = (contractRow : any, connector: IConnector) => {
-        console.log(contractRow)
-        setChosenContract(contractRow)
-        setConnector(connector)
-        handleInfoDialogOpen()
-    }
+    const openInfoDialog = (contractRow: any, connector: IConnector) => {
+        console.log(contractRow);
+        setChosenContract(contractRow);
+        setConnector(connector);
+        handleInfoDialogOpen();
+    };
 
     return (
         <TableContainer>
@@ -63,11 +71,7 @@ export default function ({ connectors, contracts, onDelete, loading, setChosenCo
                         <>
                             <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                 <TableCell>
-                                    <IconButton
-                                        aria-label="expand row"
-                                        size="small"
-                                        onClick={() => toggleFolded(row)}
-                                    >
+                                    <IconButton aria-label="expand row" size="small" onClick={() => toggleFolded(row)}>
                                         {!row.folded ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                                     </IconButton>
                                 </TableCell>
@@ -109,27 +113,51 @@ export default function ({ connectors, contracts, onDelete, loading, setChosenCo
                                                         <TableCell align="right">Actions</TableCell>
                                                     </TableRow>
                                                 </TableHead>
-                                                {!loading ? <TableBody>
-                                                    {contracts[row.id].map((contractRow) => (
-                                                        <TableRow key={""+contractRow.asset.createdAt+contractRow.asset.properties["asset:prop:name"]}>
-                                                            <TableCell component="th" scope="row">
-                                                                {contractRow.asset.properties["asset:prop:name"]}
-                                                            </TableCell>
-                                                            <TableCell>{contractRow.asset.properties["asset:prop:description"]}</TableCell>
-                                                            <TableCell>{contractRow.asset.properties["asset:prop:contenttype"]}</TableCell>
-                                                            <TableCell align="right">
-                                                                <LoadingButton color="primary" aria-label="download" loading={false} onClick={() => {openInfoDialog(contractRow, row)}}>
-                                                                    <SearchIcon />
-                                                                </LoadingButton>
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                                    :   
-                                                    <Typography>
-                                                        Loading external information.
-                                                    </Typography>
-                                                }
+                                                {!loading ? (
+                                                    <TableBody>
+                                                        {contracts[row.id].map((contractRow) => (
+                                                            <TableRow
+                                                                key={
+                                                                    '' +
+                                                                    contractRow.asset.createdAt +
+                                                                    contractRow.asset.properties['asset:prop:name']
+                                                                }
+                                                            >
+                                                                <TableCell component="th" scope="row">
+                                                                    {contractRow.asset.properties['asset:prop:name']}
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    {
+                                                                        contractRow.asset.properties[
+                                                                            'asset:prop:description'
+                                                                        ]
+                                                                    }
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    {
+                                                                        contractRow.asset.properties[
+                                                                            'asset:prop:contenttype'
+                                                                        ]
+                                                                    }
+                                                                </TableCell>
+                                                                <TableCell align="right">
+                                                                    <LoadingButton
+                                                                        color="primary"
+                                                                        aria-label="download"
+                                                                        loading={false}
+                                                                        onClick={() => {
+                                                                            openInfoDialog(contractRow, row);
+                                                                        }}
+                                                                    >
+                                                                        <SearchIcon />
+                                                                    </LoadingButton>
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                ) : (
+                                                    <Typography>Loading external information.</Typography>
+                                                )}
                                             </Table>
                                         </Box>
                                     </Collapse>

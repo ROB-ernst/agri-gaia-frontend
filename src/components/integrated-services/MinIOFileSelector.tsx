@@ -16,7 +16,16 @@ import useKeycloak from '../../contexts/KeycloakContext';
 import { httpGet, httpPatch } from '../../api';
 import { INTEGRATED_SERVICES_PATH } from '../../endpoints';
 
-import { Alert, Button, CircularProgress, Collapse, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import {
+    Alert,
+    Button,
+    CircularProgress,
+    Collapse,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+} from '@mui/material';
 import { TreeItem, TreeView, treeItemClasses, useTreeItem, TreeItemContentProps } from '@mui/x-tree-view';
 import { LoadingButton } from '@mui/lab';
 import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';

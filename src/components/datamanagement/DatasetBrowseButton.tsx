@@ -20,8 +20,6 @@ import IDataset from '../../types/IDataset';
 import { openInNewTab } from '../../util';
 
 export default function ({ dataset }: { dataset: IDataset }) {
-
-
     const openDataset = async () => {
         const datasetPrefix = `datasets/${dataset.id}`;
         const base64encodedPrefix = Buffer.from(datasetPrefix).toString('base64');

@@ -67,13 +67,16 @@ export default function ({ handleClose, ownInformation }: IConnectorAddProps) {
             return;
         }
 
-        try{
-            const record = {"X-Api-Key": ownInformation["password"]}
-            httpGet(keycloak, ownInformation["connector_data_url"]+"/catalog?providerUrl="+connectorIdsURL, record).then((result) => {
-                console.log(result)
-            })
-        }
-        catch(exception){
+        try {
+            const record = { 'X-Api-Key': ownInformation['password'] };
+            httpGet(
+                keycloak,
+                ownInformation['connector_data_url'] + '/catalog?providerUrl=' + connectorIdsURL,
+                record,
+            ).then((result) => {
+                console.log(result);
+            });
+        } catch (exception) {
             setErrorMsg('URL is not accessible.');
             return;
         }

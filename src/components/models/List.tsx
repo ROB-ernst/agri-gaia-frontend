@@ -34,16 +34,23 @@ import { LoadingButton } from '@mui/lab';
 
 interface IModelListProps {
     models: IModel[];
-    connectorAvailable: boolean
+    connectorAvailable: boolean;
     onDelete: () => void;
     onTogglePublic: (model_id: number) => void;
     selected: readonly number[];
     setSelected: Dispatch<SetStateAction<readonly number[]>>;
 }
 
-export default function ({ models, connectorAvailable, onDelete, onTogglePublic, selected, setSelected }: IModelListProps) {
+export default function ({
+    models,
+    connectorAvailable,
+    onDelete,
+    onTogglePublic,
+    selected,
+    setSelected,
+}: IModelListProps) {
     const navigate = useNavigate();
-    
+
     const [selectedRow, setSelectedRow] = useState(-1);
     const [inferenceDialogOpen, setInferenceDialogOpen] = useState(false);
 
@@ -60,20 +67,17 @@ export default function ({ models, connectorAvailable, onDelete, onTogglePublic,
         } else if (selectedIndex === selected.length - 1) {
             newSelected = newSelected.concat(selected.slice(0, -1));
         } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
+            newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
         }
         setSelected(newSelected);
-        console.log(newSelected)
+        console.log(newSelected);
     };
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
             const newSelected = models.map((n) => n.id);
             setSelected(newSelected);
-            console.log(newSelected)
+            console.log(newSelected);
             return;
         }
         setSelected([]);
@@ -85,7 +89,9 @@ export default function ({ models, connectorAvailable, onDelete, onTogglePublic,
 
     return (
         <>
-            {inferenceDialogOpen ? <ModelInferenceButton modelIds={[selectedRow]} handleClose={handleInferenceDialogClose}/> : null}
+            {inferenceDialogOpen ? (
+                <ModelInferenceButton modelIds={[selectedRow]} handleClose={handleInferenceDialogClose} />
+            ) : null}
             <TableContainer>
                 <Table>
                     <TableHead>
@@ -106,10 +112,7 @@ export default function ({ models, connectorAvailable, onDelete, onTogglePublic,
                             <TableCell>Owner</TableCell>
                             <TableCell>Size</TableCell>
                             <TableCell>Modified</TableCell>
-                            {connectorAvailable ? (
-                                <TableCell>Public</TableCell>
-                            ):null
-                            }
+                            {connectorAvailable ? <TableCell>Public</TableCell> : null}
                             <TableCell align="right">Actions</TableCell>
                         </TableRow>
                     </TableHead>
@@ -117,7 +120,7 @@ export default function ({ models, connectorAvailable, onDelete, onTogglePublic,
                         {models.map((row, index) => {
                             const isItemSelected = isSelected(row.id);
                             const labelId = `enhanced-table-checkbox-${index}`;
-                            return(
+                            return (
                                 <TableRow key={`${row.id}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     <TableCell padding="checkbox">
                                         <Checkbox
@@ -140,10 +143,12 @@ export default function ({ models, connectorAvailable, onDelete, onTogglePublic,
                                     <TableCell>{getLocalDateTime(row.last_modified)}</TableCell>
                                     {connectorAvailable ? (
                                         <TableCell>
-                                            <Switch checked={row.public} onChange={() => onTogglePublic(row.id)}></Switch>
+                                            <Switch
+                                                checked={row.public}
+                                                onChange={() => onTogglePublic(row.id)}
+                                            ></Switch>
                                         </TableCell>
-                                    ):null
-                                    }
+                                    ) : null}
                                     <TableCell align="right">
                                         <Grid container spacing={1} justifyContent="flex-end">
                                             <Grid item>
@@ -153,21 +158,31 @@ export default function ({ models, connectorAvailable, onDelete, onTogglePublic,
                                             </Grid>
                                             <Grid item>
                                                 <Tooltip title="Inference">
-                                                    <LoadingButton aria-label="delete" onClick={() => {setSelectedRow(row.id); setInferenceDialogOpen(true)}}>
+                                                    <LoadingButton
+                                                        aria-label="delete"
+                                                        onClick={() => {
+                                                            setSelectedRow(row.id);
+                                                            setInferenceDialogOpen(true);
+                                                        }}
+                                                    >
                                                         <SpeedIcon />
                                                     </LoadingButton>
                                                 </Tooltip>
                                             </Grid>
                                             <Grid item>
-                                                <ModelDownloadButton modelId={row.id}/>
+                                                <ModelDownloadButton modelId={row.id} />
                                             </Grid>
                                             <Grid item>
-                                                <ModelDeleteButton modelId={row.id} modelName={row.name} onDelete={onDelete} />
+                                                <ModelDeleteButton
+                                                    modelId={row.id}
+                                                    modelName={row.name}
+                                                    onDelete={onDelete}
+                                                />
                                             </Grid>
                                         </Grid>
                                     </TableCell>
                                 </TableRow>
-                            )
+                            );
                         })}
                     </TableBody>
                 </Table>

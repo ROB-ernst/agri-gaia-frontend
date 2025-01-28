@@ -31,7 +31,6 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import { httpGet } from '../../api';
 
-
 import { ONTOLOGY_PATH } from '../../endpoints';
 
 import GeonamesLocationSelector from '../common/GeonamesLocationSelector';
@@ -41,7 +40,7 @@ interface IDatasetGenericUploadProps {
     datasetTypes: string[];
     setDatasetMetadataSchema: (datasetMetadataSchema: object) => void;
     datasetType: string;
-    setDatasetType: (datasetType: string) => void;    
+    setDatasetType: (datasetType: string) => void;
     datasetTitle: string;
     setDatasetTitle: (datasetTitle: string) => void;
     datasetDescription: string;
@@ -60,10 +59,28 @@ interface IDatasetGenericUploadProps {
     createSuccess: boolean | undefined;
 }
 
-export default function ({ datasetTypes, setDatasetMetadataSchema, datasetType, setDatasetType, datasetTitle, setDatasetTitle, datasetDescription, setDatasetDescription, 
-    setSelectedDatasetFiles, isClassificationDataset, setIsClassificationDataset, chosenKeywords, setChosenKeywords, chosenLocations, setChosenLocations, setAnnotationFile,
-    annotationLabels, setAnnotationLabels, createInProgress, createSuccess }: IDatasetGenericUploadProps) {
-
+export default function ({
+    datasetTypes,
+    setDatasetMetadataSchema,
+    datasetType,
+    setDatasetType,
+    datasetTitle,
+    setDatasetTitle,
+    datasetDescription,
+    setDatasetDescription,
+    setSelectedDatasetFiles,
+    isClassificationDataset,
+    setIsClassificationDataset,
+    chosenKeywords,
+    setChosenKeywords,
+    chosenLocations,
+    setChosenLocations,
+    setAnnotationFile,
+    annotationLabels,
+    setAnnotationLabels,
+    createInProgress,
+    createSuccess,
+}: IDatasetGenericUploadProps) {
     const keycloak = useKeycloak();
 
     const isUploading = () => {
@@ -81,8 +98,8 @@ export default function ({ datasetTypes, setDatasetMetadataSchema, datasetType, 
     };
 
     const handleChangeClassificationDataset = (event: ChangeEvent<HTMLInputElement>) => {
-        setIsClassificationDataset(event.target.checked)
-    }
+        setIsClassificationDataset(event.target.checked);
+    };
 
     const setDatasetTypeChecked = async (s: string) => {
         setDatasetType(s);
@@ -172,7 +189,15 @@ export default function ({ datasetTypes, setDatasetMetadataSchema, datasetType, 
             <Grid container direction="row" mt={2} sx={{ height: '50px' }}>
                 <Grid item xs={10}>
                     <FormGroup>
-                        <FormControlLabel control={<Checkbox checked={isClassificationDataset} onChange={handleChangeClassificationDataset}/>} label="Classification Dataset" />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={isClassificationDataset}
+                                    onChange={handleChangeClassificationDataset}
+                                />
+                            }
+                            label="Classification Dataset"
+                        />
                     </FormGroup>
                 </Grid>
                 <Grid item xs={2}>

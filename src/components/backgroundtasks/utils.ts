@@ -9,18 +9,18 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import { TaskStatus, TaskStatusType } from "../../types/TaskStatus";
+import { TaskStatus, TaskStatusType } from '../../types/TaskStatus';
 
-export function getTaskStatusColor (status: TaskStatusType) {
-    switch(status) {
+export function getTaskStatusColor(status: TaskStatusType) {
+    switch (status) {
         case TaskStatus.created:
-            return "textPrimary";
+            return 'textPrimary';
         case TaskStatus.inprogress:
-            return "#00838f";
+            return '#00838f';
         case TaskStatus.completed:
-            return "green";
+            return 'green';
         case TaskStatus.failed:
-            return "red";
+            return 'red';
     }
-    return "textPrimary"
-}   
+    return 'textPrimary';
+}

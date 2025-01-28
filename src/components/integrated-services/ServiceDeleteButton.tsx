@@ -45,7 +45,7 @@ export default function ({
             .then(onDelete)
             .catch((error) => {
                 console.error(error);
-                setDeleteServiceError(error)
+                setDeleteServiceError(error);
             })
             .finally(() => {
                 setIsDeleting(false);
@@ -68,11 +68,7 @@ export default function ({
             ) : null}
             <Tooltip title="Delete">
                 <span>
-                    <LoadingButton
-                        aria-label="delete"
-                        loading={isDeleting}
-                        onClick={() => setConfirmDialogOpen(true)}
-                    >
+                    <LoadingButton aria-label="delete" loading={isDeleting} onClick={() => setConfirmDialogOpen(true)}>
                         <DeleteIcon />
                     </LoadingButton>
                 </span>

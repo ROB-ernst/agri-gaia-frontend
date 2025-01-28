@@ -23,8 +23,13 @@ interface IDatasetSpecificUploadProps {
     setErrorMsg: (errorMsg: string | undefined) => void;
 }
 
-export default function ({ datasetTypes, datasetMetadata, setDatasetMetadata, datasetMetadataSchema, setErrorMsg }: IDatasetSpecificUploadProps) {
-
+export default function ({
+    datasetTypes,
+    datasetMetadata,
+    setDatasetMetadata,
+    datasetMetadataSchema,
+    setErrorMsg,
+}: IDatasetSpecificUploadProps) {
     return (
         <Grid item xs={6}>
             <Box>

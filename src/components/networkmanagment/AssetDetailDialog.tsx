@@ -33,77 +33,91 @@ interface IDatasetUploadProps {
 export default function ({ handleClose, asset, connector }: IDatasetUploadProps) {
     const keycloak = useKeycloak();
 
-    const [message, setMessage] = useState<string>("")
-    const [loading, setLoading] = useState<boolean>(false)
+    const [message, setMessage] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
 
     const getConnectorId = () => {
-        if(connector !== undefined){
-            return connector.id
-        }else return 0
-    }
-  
-    const transferAsset = async (connector_id : number, offer_id: string, asset_id : string) => {
-        console.log(connector_id)
-        console.log(offer_id)
-        console.log(asset_id)
-        setLoading(true)
-        
+        if (connector !== undefined) {
+            return connector.id;
+        } else return 0;
+    };
+
+    const transferAsset = async (connector_id: number, offer_id: string, asset_id: string) => {
+        console.log(connector_id);
+        console.log(offer_id);
+        console.log(asset_id);
+        setLoading(true);
+
         httpPost(keycloak, `${NETWORK_PATH}/contractNegotiation/${connector_id}/${offer_id}/${asset_id}`)
-            .then((result : string) => {
-                setMessage("Negotiate")
-                console.log(result)
+            .then((result: string) => {
+                setMessage('Negotiate');
+                console.log(result);
                 const handle = setInterval((): void => {
                     httpGet(keycloak, `${NETWORK_PATH}/contractNegotiation/${result}`).then((result) => {
-                        console.log(result)
-                        console.log(result.contractAgreementId)
-                        console.log(result.state)
-                        setMessage("Negotiating: " + result.state)
-                        if(result.state === "CONFIRMED"){
-                            clearInterval(handle)
-                            httpPost(keycloak, `${NETWORK_PATH}/transferprocess/${connector_id}/${result.contractAgreementId}/${asset_id}`).then((result) => {
-                                setMessage("Transfer")
+                        console.log(result);
+                        console.log(result.contractAgreementId);
+                        console.log(result.state);
+                        setMessage('Negotiating: ' + result.state);
+                        if (result.state === 'CONFIRMED') {
+                            clearInterval(handle);
+                            httpPost(
+                                keycloak,
+                                `${NETWORK_PATH}/transferprocess/${connector_id}/${result.contractAgreementId}/${asset_id}`,
+                            ).then((result) => {
+                                setMessage('Transfer');
                                 const handle2 = setInterval((): void => {
                                     httpGet(keycloak, `${NETWORK_PATH}/transferprocess/${result}`).then((result) => {
-                                        console.log(result)
-                                        console.log(result.state)
-                                        setMessage("Transfer: " + result.state)
-                                        if(result.state === "COMPLETED"){
-                                            console.log(result.dataDestination.properties.assetName)
-                                            httpPost(keycloak, `${NETWORK_PATH}/import/${result.dataDestination.properties.assetName}`).catch((error) => console.log(error))
-                                            setLoading(false)
-                                            clearInterval(handle2)
+                                        console.log(result);
+                                        console.log(result.state);
+                                        setMessage('Transfer: ' + result.state);
+                                        if (result.state === 'COMPLETED') {
+                                            console.log(result.dataDestination.properties.assetName);
+                                            httpPost(
+                                                keycloak,
+                                                `${NETWORK_PATH}/import/${result.dataDestination.properties.assetName}`,
+                                            ).catch((error) => console.log(error));
+                                            setLoading(false);
+                                            clearInterval(handle2);
                                         }
-                                    })
+                                    });
                                 }, 5000);
-                            })
+                            });
                         }
-                    })
+                    });
                 }, 5000);
             })
             .catch((error) => {
-                console.log(error)
+                console.log(error);
             })
             .finally(() => {
-                console.log("Finish")
+                console.log('Finish');
             });
-    }
+    };
 
     return (
         <Dialog open={true} onClose={handleClose} fullWidth={true} maxWidth="md">
             <DialogTitle>Asset Information</DialogTitle>
             <DialogContent>
                 <pre>{JSON.stringify(asset, null, 2)}</pre>
-                <Typography>
-                    {message}
-                </Typography>
+                <Typography>{message}</Typography>
             </DialogContent>
             <DialogActions>
-                {message.trim() === 'Transfer: COMPLETED' ? <LoadingButton onClick={handleClose} loading={false}>
+                {message.trim() === 'Transfer: COMPLETED' ? (
+                    <LoadingButton onClick={handleClose} loading={false}>
                         Close
-                </LoadingButton> : <LoadingButton color="primary" aria-label="download" loading={loading} onClick={() => {transferAsset(getConnectorId(), asset['id'], asset['asset']["properties"]["asset:prop:id"])}}>
-                    <DownloadIcon />
-                </LoadingButton>
-                }
+                    </LoadingButton>
+                ) : (
+                    <LoadingButton
+                        color="primary"
+                        aria-label="download"
+                        loading={loading}
+                        onClick={() => {
+                            transferAsset(getConnectorId(), asset['id'], asset['asset']['properties']['asset:prop:id']);
+                        }}
+                    >
+                        <DownloadIcon />
+                    </LoadingButton>
+                )}
             </DialogActions>
         </Dialog>
     );

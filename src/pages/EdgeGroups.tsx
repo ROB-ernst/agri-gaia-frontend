@@ -105,7 +105,14 @@ export default function EdgeGroups() {
                 </Grid>
             ) : (
                 <>
-                    <EdgeGroupList edgeGroups={edgeGroups} tags={tags} refreshCallback={() => {fetchEdgeGroups(); fetchTags();}}/>
+                    <EdgeGroupList
+                        edgeGroups={edgeGroups}
+                        tags={tags}
+                        refreshCallback={() => {
+                            fetchEdgeGroups();
+                            fetchTags();
+                        }}
+                    />
                     <NoDataYet data={edgeGroups} name="Edge Groups" />
                 </>
             )}

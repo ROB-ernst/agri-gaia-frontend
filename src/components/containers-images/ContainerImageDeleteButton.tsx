@@ -24,7 +24,13 @@ import { CONTAINER_IMAGES_PATH } from '../../endpoints';
 import IContainerImage from '../../types/IContainerImage';
 import AlertSnackbar from '../common/AlertSnackbar';
 
-export default function ({ containerImage: containerImage, onDelete }: { containerImage: IContainerImage; onDelete: () => void }) {
+export default function ({
+    containerImage: containerImage,
+    onDelete,
+}: {
+    containerImage: IContainerImage;
+    onDelete: () => void;
+}) {
     const keycloak = useKeycloak();
 
     const [isDeleting, setIsDeleting] = useState<boolean>(false);

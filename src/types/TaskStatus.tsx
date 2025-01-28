@@ -10,10 +10,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 export enum TaskStatus {
-    created = "created",
-    completed = "completed",
-    inprogress = "inprogress",
-    failed = "failed"
+    created = 'created',
+    completed = 'completed',
+    inprogress = 'inprogress',
+    failed = 'failed',
 }
 
 export type TaskStatusType = keyof typeof TaskStatus;

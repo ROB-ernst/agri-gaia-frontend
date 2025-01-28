@@ -59,16 +59,16 @@ export default function DataManagement() {
         }
     };
 
-    const fetchConnectorInformation = () =>{
-        httpGet(keycloak, NETWORK_PATH+"/info")
-            .then((result) => {  
-                console.log(result)
-                setConnectorAvailable(result["available"])
+    const fetchConnectorInformation = () => {
+        httpGet(keycloak, NETWORK_PATH + '/info')
+            .then((result) => {
+                console.log(result);
+                setConnectorAvailable(result['available']);
             })
             .catch((error) => {
                 console.error(error);
             });
-    }
+    };
 
     const fetchDatasets = async () => {
         httpGet(keycloak, DATASETS_PATH)
@@ -143,14 +143,14 @@ export default function DataManagement() {
     };
 
     const downloadDatasets = async () => {
-        for(const datasetId in selected){
+        for (const datasetId in selected) {
             httpGet(keycloak, `${DATASETS_PATH}/${selected[datasetId]}${DATASETS_DOWNLOAD_PATH}`)
                 .then(({ blob, fileName }) => {
                     downloadBlob(blob, fileName);
                 })
                 .catch((error) => {
                     console.error(error);
-                })
+                });
         }
     };
 
@@ -158,7 +158,9 @@ export default function DataManagement() {
         <>
             {uploadDialogOpen ? <UploadDatasetDialog handleClose={handleUploadDialogClose} /> : null}
             {convertDialogOpen ? <ConvertDatasetDialog handleClose={handleConvertDialogClose} /> : null}
-            {inferenceDialogOpen ? <DatasetInferenceDialog datasetIds={selected} handleClose={handleInferenceDialogClose}/> : null}
+            {inferenceDialogOpen ? (
+                <DatasetInferenceDialog datasetIds={selected} handleClose={handleInferenceDialogClose} />
+            ) : null}
 
             <Grid container justifyContent="space-between">
                 <Grid item md={12} lg={6}>
@@ -170,12 +172,11 @@ export default function DataManagement() {
                 <Grid item md={12} lg={6}>
                     <Grid container spacing={1} justifyContent="right" alignItems={'center'}>
                         <Grid item alignItems={'center'}>
-                            {selected.length ?
+                            {selected.length ? (
                                 <Typography variant="h6">
-                                    {selected.length + ' Dataset' + (selected.length == 1 ? '':'s') + ' selected'}
+                                    {selected.length + ' Dataset' + (selected.length == 1 ? '' : 's') + ' selected'}
                                 </Typography>
-                                : null
-                            }
+                            ) : null}
                         </Grid>
                         <Grid item>
                             <Fab

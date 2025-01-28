@@ -29,21 +29,21 @@ export default function ({ handleClose, ownInformation }: IDatasetUploadProps) {
             <DialogTitle>Connector Information</DialogTitle>
             <DialogContent>
                 <Grid container direction="row" mt={2} sx={{ height: '50px' }}>
-                    <Typography>Data Url: {ownInformation["connector_data_url"]}</Typography>
+                    <Typography>Data Url: {ownInformation['connector_data_url']}</Typography>
                 </Grid>
                 <Grid container direction="row" mt={2} sx={{ height: '50px' }}>
-                    <Typography>IDS Url: {ownInformation["connector_ids_url"]}</Typography>
+                    <Typography>IDS Url: {ownInformation['connector_ids_url']}</Typography>
                 </Grid>
                 <Grid container direction="row" mt={2} sx={{ height: '50px' }}>
-                    <Typography>MinIO Url: {ownInformation["minio_url"]}</Typography>
+                    <Typography>MinIO Url: {ownInformation['minio_url']}</Typography>
                 </Grid>
                 <Grid container direction="row" mt={2} sx={{ height: '50px' }}>
-                    <Typography>Password: {ownInformation["password"]}</Typography>
+                    <Typography>Password: {ownInformation['password']}</Typography>
                 </Grid>
             </DialogContent>
             <DialogActions>
                 <LoadingButton onClick={handleClose} loading={false}>
-                        Close
+                    Close
                 </LoadingButton>
             </DialogActions>
         </Dialog>

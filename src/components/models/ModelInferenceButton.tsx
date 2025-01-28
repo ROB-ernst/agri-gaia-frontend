@@ -17,14 +17,33 @@ import useKeycloak from '../../contexts/KeycloakContext';
 import AlertSnackbar from '../common/AlertSnackbar';
 
 import { TRITON_PATH, DATASETS_PATH } from '../../endpoints';
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, SelectChangeEvent, Snackbar, TextField, Typography, makeStyles } from '@mui/material';
+import {
+    Button,
+    Checkbox,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    FormControlLabel,
+    InputLabel,
+    ListItemText,
+    MenuItem,
+    OutlinedInput,
+    Select,
+    SelectChangeEvent,
+    Snackbar,
+    TextField,
+    Typography,
+    makeStyles,
+} from '@mui/material';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import IDataset from '../../types/IDataset';
 import useApplicationTasks from '../../contexts/TasksContext';
 import React from 'react';
 import { openInNewTab } from '../../util';
-import {Buffer} from 'buffer';
+import { Buffer } from 'buffer';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -38,13 +57,7 @@ const MenuProps = {
     },
 };
 
-export default function ({
-    modelIds,
-    handleClose,
-}: {
-    modelIds: readonly number[];
-    handleClose: () => void;
-}) {
+export default function ({ modelIds, handleClose }: { modelIds: readonly number[]; handleClose: () => void }) {
     const keycloak = useKeycloak();
     const tasks = useApplicationTasks();
     const [datasets, setDatasets] = React.useState<IDataset[]>([]);
@@ -60,38 +73,37 @@ export default function ({
     useEffect(() => {
         httpGet(keycloak, DATASETS_PATH)
             .then((data) => {
-                setDatasets(data)
-            }
-            )
+                setDatasets(data);
+            })
             .catch((error) => {
                 console.error(error);
-            })
+            });
     }, []);
 
     const openServiceResponse = async (path: string) => {
         const datasetPrefix = path;
         const base64encodedPrefix = Buffer.from(datasetPrefix).toString('base64');
         const datasetUrl = `https://minio-console.${PROJECT_BASE_URL}/browser/${keycloak?.profile?.username}/${base64encodedPrefix}`;
-        console.log(datasetUrl)
+        console.log(datasetUrl);
         openInNewTab(datasetUrl);
     };
 
     const inference = async () => {
-        let url = null
-        console.log(external)
-        console.log(externalAdress)
-        if (external){
-            url = [externalAdress]
+        let url = null;
+        console.log(external);
+        console.log(externalAdress);
+        if (external) {
+            url = [externalAdress];
         }
-        console.log(url)
+        console.log(url);
 
-        httpPost(keycloak, `${TRITON_PATH}`, {models: modelIds, datasets: selectedDataset, url: url}, undefined, true)
+        httpPost(keycloak, `${TRITON_PATH}`, { models: modelIds, datasets: selectedDataset, url: url }, undefined, true)
             .then(({ headers }) => {
                 httpGet(keycloak, headers.get('Location'))
                     .then((task) => {
                         tasks?.addServerBackgroundTask(keycloak, tasks, task, (completedTask) => {
-                            if (completedTask.status == 'completed'){
-                                openServiceResponse('inference/' + completedTask.id + '/inference.json')
+                            if (completedTask.status == 'completed') {
+                                openServiceResponse('inference/' + completedTask.id + '/inference.json');
                             }
                         });
                     })
@@ -101,7 +113,7 @@ export default function ({
             })
             .catch((error) => {
                 console.error(error);
-            })
+            });
     };
 
     const handleConfirmationResult = (result: boolean) => {
@@ -114,8 +126,8 @@ export default function ({
         const {
             target: { value },
         } = event;
-        console.log(value)
-        if(typeof value != 'string'){
+        console.log(value);
+        if (typeof value != 'string') {
             setSelectedDataset(value);
         }
     };
@@ -124,46 +136,48 @@ export default function ({
         setExternal(event.target.checked);
     };
 
-    
-    function checkIpAddress(ip: string) { 
-        const ipv4Pattern =  
-            /^(\d{1,3}\.){3}\d{1,3}$/; 
-        const ipv6Pattern =  
-            /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
-        const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i; 
-        return ipv4Pattern.test(ip) || ipv6Pattern.test(ip) || urlPattern.test(ip); 
-    } 
+    function checkIpAddress(ip: string) {
+        const ipv4Pattern = /^(\d{1,3}\.){3}\d{1,3}$/;
+        const ipv6Pattern = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
+        const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+        return ipv4Pattern.test(ip) || ipv6Pattern.test(ip) || urlPattern.test(ip);
+    }
 
     return (
         <>
             <Dialog open={true} maxWidth="sm" fullWidth>
                 <DialogTitle>{'Run Inference'}</DialogTitle>
                 <DialogContent>
-                    <FormControlLabel 
-                        control={<Checkbox
-                            icon={<RadioButtonUncheckedIcon />}
-                            checkedIcon={<RadioButtonCheckedIcon />}
-                            onChange={handleChangeExternal}
-                        />} 
-                        label="External Processing" 
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                icon={<RadioButtonUncheckedIcon />}
+                                checkedIcon={<RadioButtonCheckedIcon />}
+                                onChange={handleChangeExternal}
+                            />
+                        }
+                        label="External Processing"
                     />
                     <div>
-                        <TextField id="filled-basic" 
-                            label="Triton-Adress" 
-                            variant="outlined" 
-                            disabled={!external} 
+                        <TextField
+                            id="filled-basic"
+                            label="Triton-Adress"
+                            variant="outlined"
+                            disabled={!external}
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                 setExternalAdress(event.target.value);
                             }}
                             error={external && !checkIpAddress(externalAdress)}
-                            helperText = {!checkIpAddress(externalAdress) ? "Please enter a valid URL or IP Adress" : null}
+                            helperText={
+                                !checkIpAddress(externalAdress) ? 'Please enter a valid URL or IP Adress' : null
+                            }
                         />
                     </div>
-                    <br/>
+                    <br />
                     <Typography>{'Select one or multiple Datasets to test the model:'}</Typography>
                     <InputLabel id="demo-simple-select-label">Dataset</InputLabel>
                     <div>
-                        <FormControl sx={{ m: 1, width: 300 }} >
+                        <FormControl sx={{ m: 1, width: 300 }}>
                             <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
                             <Select
                                 labelId="demo-multiple-checkbox-label"
@@ -175,10 +189,7 @@ export default function ({
                                 MenuProps={MenuProps}
                             >
                                 {datasets.map((data) => (
-                                    <MenuItem
-                                        key={data.id}
-                                        value={data.id}
-                                    >
+                                    <MenuItem key={data.id} value={data.id}>
                                         {data.name}
                                     </MenuItem>
                                 ))}
@@ -190,7 +201,11 @@ export default function ({
                     <Button onClick={() => handleConfirmationResult(false)} color="secondary">
                         Cancel
                     </Button>
-                    <Button onClick={() => handleConfirmationResult(true)} color="primary" disabled={(external && !checkIpAddress(externalAdress)) || selectedDataset.length == 0}>
+                    <Button
+                        onClick={() => handleConfirmationResult(true)}
+                        color="primary"
+                        disabled={(external && !checkIpAddress(externalAdress)) || selectedDataset.length == 0}
+                    >
                         Confirm
                     </Button>
                 </DialogActions>

@@ -9,22 +9,20 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import React from "react"
+import React from 'react';
 
 // Create the layout component
 class AugmentingLayout extends React.Component<any, any> {
     render() {
-        const {
-            getComponent
-        } = this.props
+        const { getComponent } = this.props;
 
-        const BaseLayout = getComponent("BaseLayout", true)
+        const BaseLayout = getComponent('BaseLayout', true);
 
         return (
             <div>
                 <BaseLayout />
             </div>
-        )
+        );
     }
 }
 
@@ -32,7 +30,7 @@ class AugmentingLayout extends React.Component<any, any> {
 export const AugmentingLayoutPlugin = () => {
     return {
         components: {
-            AugmentingLayout: AugmentingLayout
-        }
-    }
-}
+            AugmentingLayout: AugmentingLayout,
+        },
+    };
+};

@@ -64,7 +64,7 @@ export default function ({ handleClose }: IDatasetImportProps) {
 
         for (const file of Array.from(selectedDatasetFiles)) formData.append('files', file, file.name);
 
-        httpUpload(keycloak, DATASETS_PATH+"/import", formData)
+        httpUpload(keycloak, DATASETS_PATH + '/import', formData)
             .then(() => {
                 setErrorMsg(undefined);
                 setCreateSuccess(true);

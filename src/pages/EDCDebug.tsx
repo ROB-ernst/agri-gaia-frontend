@@ -22,22 +22,22 @@ import { DATASETS_PATH } from '../endpoints';
 export default function EDCDebug() {
     const keycloak = useKeycloak();
 
-    const [negotiationId, setNegotiationId] = useState<string>("");
+    const [negotiationId, setNegotiationId] = useState<string>('');
 
     useEffect(() => {
-        httpGet(keycloak, DATASETS_PATH + "/catalogue").then((result) => {
-            console.log(result)
-        })
+        httpGet(keycloak, DATASETS_PATH + '/catalogue').then((result) => {
+            console.log(result);
+        });
     }, [keycloak]);
 
     const handleSearchButtonClick = () => {
-        httpPatch(keycloak, DATASETS_PATH + `/transfer/${negotiationId}`)
-    }
+        httpPatch(keycloak, DATASETS_PATH + `/transfer/${negotiationId}`);
+    };
 
-    const setNegotiationIdChecked = (id : string) => {
-        setNegotiationId(id)
-        console.log(negotiationId)
-    }
+    const setNegotiationIdChecked = (id: string) => {
+        setNegotiationId(id);
+        console.log(negotiationId);
+    };
 
     return (
         <>
@@ -45,8 +45,9 @@ export default function EDCDebug() {
                 id="input_negotiation"
                 label="Negotiation_ID"
                 variant="standard"
-                value={negotiationId} 
-                onChange={(e) => setNegotiationIdChecked(e.target.value)}/>
+                value={negotiationId}
+                onChange={(e) => setNegotiationIdChecked(e.target.value)}
+            />
             <LoadingButton
                 color="primary"
                 aria-label="search"

@@ -46,26 +46,26 @@ export default function ModelManagement() {
             .then((models: IModel[]) => {
                 models.sort((a, b) => a.name.localeCompare(b.name));
                 setModels(models);
-                console.log("Models:", models);
+                console.log('Models:', models);
             })
             .catch((error) => {
                 console.error(error);
             });
     };
 
-    const fetchConnectorInformation = () =>{
-        httpGet(keycloak, NETWORK_PATH+"/info")
-            .then((result) => {  
-                console.log(result)
-                setConnectorAvailable(result["available"])
+    const fetchConnectorInformation = () => {
+        httpGet(keycloak, NETWORK_PATH + '/info')
+            .then((result) => {
+                console.log(result);
+                setConnectorAvailable(result['available']);
             })
             .catch((error) => {
                 console.error(error);
             });
-    }
+    };
 
     useEffect(() => {
-        fetchConnectorInformation
+        fetchConnectorInformation;
         fetchModels();
         fetchUsername();
     }, [keycloak]);
@@ -97,14 +97,14 @@ export default function ModelManagement() {
     };
 
     const downloadModels = async () => {
-        for(const modelId in selected){
+        for (const modelId in selected) {
             httpGet(keycloak, `${MODELS_PATH}/${selected[modelId]}/download`)
                 .then(({ blob, fileName }) => {
                     downloadBlob(blob, fileName);
                 })
                 .catch((error) => {
                     console.error(error);
-                })
+                });
         }
     };
 
@@ -121,7 +121,9 @@ export default function ModelManagement() {
     return (
         <>
             {uploadDialogOpen ? <UploadModelDialog handleClose={handleUploadDialogClose} /> : null}
-            {inferenceDialogOpen ? <ModelInferenceButton modelIds={selected} handleClose={handleInferenceDialogClose}/> : null}
+            {inferenceDialogOpen ? (
+                <ModelInferenceButton modelIds={selected} handleClose={handleInferenceDialogClose} />
+            ) : null}
             <Grid container spacing={2} justifyContent="space-between" alignItems={'flex-start'}>
                 <Grid item xs={1}>
                     <Typography variant="h4" component="h4">
@@ -129,14 +131,13 @@ export default function ModelManagement() {
                     </Typography>
                 </Grid>
                 <Grid item md={12} lg={6}>
-                    <Grid container spacing={1} justifyContent="right"  alignItems={'center'}>
+                    <Grid container spacing={1} justifyContent="right" alignItems={'center'}>
                         <Grid item xs="auto">
-                            {selected.length ?
+                            {selected.length ? (
                                 <Typography variant="h6">
-                                    {selected.length + ' Model' + (selected.length == 1 ? '':'s') + ' selected'}
+                                    {selected.length + ' Model' + (selected.length == 1 ? '' : 's') + ' selected'}
                                 </Typography>
-                                : null
-                            }
+                            ) : null}
                         </Grid>
                         <Grid item>
                             <Fab

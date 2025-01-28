@@ -9,7 +9,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-export default interface  IConnector {
+export default interface IConnector {
     id: number;
     name: string;
     description: string;

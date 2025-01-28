@@ -21,5 +21,5 @@ export default interface IIntergratedServiceInput {
     required: boolean;
     select: any;
     value: any;
-    description:string;
+    description: string;
 }

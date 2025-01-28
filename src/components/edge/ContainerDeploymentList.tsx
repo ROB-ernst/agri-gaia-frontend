@@ -39,8 +39,6 @@ function ContainerDeploymentRow(props: { deployment: IContainerDeployment; refre
     const { deployment, refreshCallback } = props;
     const [open, setOpen] = useState(false);
 
-    
-
     return (
         <>
             <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -62,7 +60,7 @@ function ContainerDeploymentRow(props: { deployment: IContainerDeployment; refre
                                     onUndeploy={refreshCallback}
                                 />
                             </Grid>
-                        ) :  (
+                        ) : (
                             <>
                                 <Grid item>
                                     <ContainerDeploymentDeployButton

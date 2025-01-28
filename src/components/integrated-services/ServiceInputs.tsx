@@ -58,13 +58,13 @@ export default function ServiceInputs(
 
     const loadEndpointInfo = (event: any, index: number, operation: string) => {
         //setSelectedIndex(index);
-        setActivePath(index)
-        setActivePathOperation(operation)
-        console.log(operation)
+        setActivePath(index);
+        setActivePathOperation(operation);
+        console.log(operation);
         httpGet(keycloak, `${INTEGRATED_SERVICES_PATH}/${service_name}/${index}/${operation}/info`)
             .then((response) => {
-                setServiceInfo(response)
-                console.log(response)
+                setServiceInfo(response);
+                console.log(response);
             })
             .catch((error) => {
                 console.error(error);
@@ -72,18 +72,21 @@ export default function ServiceInputs(
     };
 
     useEffect(() => {
-        if (Object.keys(serviceSpec).length){
-            console.log(serviceSpec)
-            setViewState(1)
+        if (Object.keys(serviceSpec).length) {
+            console.log(serviceSpec);
+            setViewState(1);
         }
-    }, [serviceSpec])
+    }, [serviceSpec]);
 
     const loadServiceInputTemplate = (filepath: string) => {
         filepath = encodeURIComponent(filepath);
-        httpGet(keycloak, `${INTEGRATED_SERVICES_PATH}/${service_name}/${activePath}/${activePathOperation}/inputs?uri=${filepath}`)
+        httpGet(
+            keycloak,
+            `${INTEGRATED_SERVICES_PATH}/${service_name}/${activePath}/${activePathOperation}/inputs?uri=${filepath}`,
+        )
             .then((response) => {
-                setServiceSpec(response)
-                console.log(response)
+                setServiceSpec(response);
+                console.log(response);
             })
             .catch((error) => {
                 console.error(error);
@@ -99,11 +102,18 @@ export default function ServiceInputs(
     };
 
     const openServiceResponse = async (path: string) => {
-        const servicePrefix = 'services/' + service_name + serviceInfo['paths'  as keyof typeof serviceInfo][activePath] + '/' + activePathOperation + '/' + path;
-        console.log(servicePrefix)
+        const servicePrefix =
+            'services/' +
+            service_name +
+            serviceInfo['paths' as keyof typeof serviceInfo][activePath] +
+            '/' +
+            activePathOperation +
+            '/' +
+            path;
+        console.log(servicePrefix);
         const base64encodedPrefix = Buffer.from(servicePrefix).toString('base64');
         const datasetUrl = `https://minio-console.${PROJECT_BASE_URL}/browser/${keycloak?.profile?.username}/${base64encodedPrefix}`;
-        console.log(datasetUrl)
+        console.log(datasetUrl);
         openInNewTab(datasetUrl);
     };
 
@@ -111,9 +121,16 @@ export default function ServiceInputs(
         <>
             <Dialog open={true} onClose={onClose} fullWidth maxWidth="lg" style={{ maxHeight: '90%' }}>
                 <DialogTitle textAlign={'center'}>
-                    {viewState == 1 ? <IconButton onClick={() => {setViewState(0)}} aria-label="back">
-                        <ArrowBackIcon/>
-                    </IconButton> : null}
+                    {viewState == 1 ? (
+                        <IconButton
+                            onClick={() => {
+                                setViewState(0);
+                            }}
+                            aria-label="back"
+                        >
+                            <ArrowBackIcon />
+                        </IconButton>
+                    ) : null}
                     {`Use ${service_name}`}
                 </DialogTitle>
                 <DialogContent>
@@ -123,79 +140,95 @@ export default function ServiceInputs(
                                 <h3>Endpoints:</h3>
                                 <List style={{ maxHeight: '30em', overflow: 'auto' }}>
                                     {Object.keys(serviceInfo).map((key, index) =>
-                                        key == 'paths' ? (
-                                            Object.values(serviceInfo[key as keyof typeof serviceInfo]).map((entry, index) =>
-                                                <ListItem key={index}>
-                                                    <ListItemButton
-                                                        //onClick={() =>
-                                                        //    loadServiceEndpoint(String(entry))
-                                                        //}
-                                                        selected={activePath == index}
-                                                        onClick={(event) => loadEndpointInfo(event, index, serviceInfo['operations' as keyof typeof serviceInfo][index])}
-                                                    >
-                                                        <ListItemText>
-                                                            <Grid container spacing={6}>
-                                                                <Grid item xs={2}>
-                                                                    <b>{String(serviceInfo['operations' as keyof typeof serviceInfo][index]).toUpperCase()}</b>
-                                                                </Grid>
-                                                                <Grid item xs>
-                                                                    {String(entry)}
-                                                                </Grid>
-                                                            </Grid>
-                                                        </ListItemText>
-                                                    </ListItemButton>
-                                                </ListItem>
-                                            )
-                                        ) : null,
+                                        key == 'paths'
+                                            ? Object.values(serviceInfo[key as keyof typeof serviceInfo]).map(
+                                                  (entry, index) => (
+                                                      <ListItem key={index}>
+                                                          <ListItemButton
+                                                              //onClick={() =>
+                                                              //    loadServiceEndpoint(String(entry))
+                                                              //}
+                                                              selected={activePath == index}
+                                                              onClick={(event) =>
+                                                                  loadEndpointInfo(
+                                                                      event,
+                                                                      index,
+                                                                      serviceInfo[
+                                                                          'operations' as keyof typeof serviceInfo
+                                                                      ][index],
+                                                                  )
+                                                              }
+                                                          >
+                                                              <ListItemText>
+                                                                  <Grid container spacing={6}>
+                                                                      <Grid item xs={2}>
+                                                                          <b>
+                                                                              {String(
+                                                                                  serviceInfo[
+                                                                                      'operations' as keyof typeof serviceInfo
+                                                                                  ][index],
+                                                                              ).toUpperCase()}
+                                                                          </b>
+                                                                      </Grid>
+                                                                      <Grid item xs>
+                                                                          {String(entry)}
+                                                                      </Grid>
+                                                                  </Grid>
+                                                              </ListItemText>
+                                                          </ListItemButton>
+                                                      </ListItem>
+                                                  ),
+                                              )
+                                            : null,
                                     )}
                                 </List>
                             </Grid>
                             <Divider orientation="vertical" flexItem></Divider>
-                            {activePath != -1 ? 
+                            {activePath != -1 ? (
                                 <Grid item xs>
                                     <h3>Call History:</h3>
                                     <List style={{ maxHeight: '30em', overflow: 'auto' }}>
                                         <ListItem key={-1}>
-                                            <ListItemButton
-                                                onClick={() =>
-                                                    loadServiceInputTemplate("new")
-                                                }
-                                            >
-                                                <ListItemText>
-                                                    {"New Call"}
-                                                </ListItemText>
+                                            <ListItemButton onClick={() => loadServiceInputTemplate('new')}>
+                                                <ListItemText>{'New Call'}</ListItemText>
                                             </ListItemButton>
                                         </ListItem>
                                         {Object.keys(serviceInfo).map((key, index) =>
-                                            key == "history" ? 
-                                                Object.values(serviceInfo[key as keyof typeof serviceInfo]).map((entry, index) =>
-                                                    <ListItem key={index}>
-                                                        <ListItemButton
-                                                            onClick={() =>
-                                                                loadServiceInputTemplate(String(entry))
-                                                            }
-                                                        >
-                                                            <ListItemText>
-                                                                {String(entry)}
-                                                            </ListItemText>
-                                                        </ListItemButton>
-                                                        <Tooltip title="Open">
-                                                            <span>
-                                                                <IconButton aria-label="open" onClick={() => openServiceResponse(String(entry))}>
-                                                                    <SearchIcon />
-                                                                </IconButton>
-                                                            </span>
-                                                        </Tooltip>
-                                                    </ListItem>
-                                                ) : null,
+                                            key == 'history'
+                                                ? Object.values(serviceInfo[key as keyof typeof serviceInfo]).map(
+                                                      (entry, index) => (
+                                                          <ListItem key={index}>
+                                                              <ListItemButton
+                                                                  onClick={() =>
+                                                                      loadServiceInputTemplate(String(entry))
+                                                                  }
+                                                              >
+                                                                  <ListItemText>{String(entry)}</ListItemText>
+                                                              </ListItemButton>
+                                                              <Tooltip title="Open">
+                                                                  <span>
+                                                                      <IconButton
+                                                                          aria-label="open"
+                                                                          onClick={() =>
+                                                                              openServiceResponse(String(entry))
+                                                                          }
+                                                                      >
+                                                                          <SearchIcon />
+                                                                      </IconButton>
+                                                                  </span>
+                                                              </Tooltip>
+                                                          </ListItem>
+                                                      ),
+                                                  )
+                                                : null,
                                         )}
                                     </List>
-                                </Grid> : null
-                            }
+                                </Grid>
+                            ) : null}
                             <Divider orientation="vertical" flexItem></Divider>
                             <Grid item xs style={{ maxHeight: '90%', overflow: 'auto' }}>
                                 {Object.keys(serviceInfo).map((key) =>
-                                    key != 'paths' && key != "history" && key != "operations" ? (
+                                    key != 'paths' && key != 'history' && key != 'operations' ? (
                                         <>
                                             <h4 style={{ textTransform: 'capitalize' }}>{key + ':'}</h4>
                                             <p>{serviceInfo[key as keyof typeof serviceInfo]}</p>
@@ -206,11 +239,7 @@ export default function ServiceInputs(
                         </Grid>
                     ) : null}
                     {viewState == 1 ? (
-                        <SwaggerUI
-                            handleClose={handleClose}
-                            apiSpec={serviceSpec}
-                            service_name={service_name}
-                        />
+                        <SwaggerUI handleClose={handleClose} apiSpec={serviceSpec} service_name={service_name} />
                     ) : null}
                 </DialogContent>
             </Dialog>

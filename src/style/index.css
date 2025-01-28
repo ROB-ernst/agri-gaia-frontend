@@ -12,80 +12,77 @@
  */
 
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+        'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 #open-data-map {
-  position: absolute !important;
-  top: 64px;
-  bottom: 30px;
-  right: 0;
+    position: absolute !important;
+    top: 64px;
+    bottom: 30px;
+    right: 0;
 }
 
 .open-data-map-sidenav-open {
-  /* DOM update does not work properly, so just let the map extend underneath the SideNav
+    /* DOM update does not work properly, so just let the map extend underneath the SideNav
   left: 280px;*/
-  left: 70px;
+    left: 70px;
 }
 
 .open-data-map-sidenav-closed {
-  left: 70px;
+    left: 70px;
 }
 
 #open-data-type-select-card {
-  right: 30px;
+    right: 30px;
 }
 
 #open-data-type-select-card-content {
-  padding: 10px;
-  width: 150px;
+    padding: 10px;
+    width: 150px;
 }
 
 #geographic-data-menu-card {
-  left: 330px;
+    left: 330px;
 }
 
 #weather-card {
-  top: 150px;
+    top: 150px;
 }
 
 #search-location-card {
-  padding: '2px 4px';
-  display: 'flex';
-  align-items: 'center';
-  width: 300;
+    padding: '2px 4px';
+    display: 'flex';
+    align-items: 'center';
+    width: 300;
 }
 
 #geographic-data-menu-card-content {
-  /*padding: 10px;*/
-  width: 300px;
+    /*padding: 10px;*/
+    width: 300px;
 }
 
 .leaflet-control-zoom {
-  display: none;
+    display: none;
 }
 
 .map-overlay-card {
-  z-index: 500;
-  position: absolute;
-  top: 84px;
+    z-index: 500;
+    position: absolute;
+    top: 84px;
 }
 
 .map-overlay-left-sidenav-open {
-  left: 310;
+    left: 310;
 }
 
 .map-overlay-left-sidenav-closed {
-  left: 70;
+    left: 70;
 }
-

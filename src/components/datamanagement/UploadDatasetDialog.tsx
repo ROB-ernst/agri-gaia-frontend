@@ -60,13 +60,13 @@ export default function ({ handleClose }: IDatasetUploadProps) {
 
     const [createSuccess, setCreateSuccess] = useState<boolean | undefined>(undefined);
 
-    const increaseStep = () =>{
-        setStep(step + 1)
-    }
+    const increaseStep = () => {
+        setStep(step + 1);
+    };
 
-    const decreaseStep = () =>{
-        setStep(step - 1)
-    }
+    const decreaseStep = () => {
+        setStep(step - 1);
+    };
 
     useEffect(() => {
         fetchClasses();
@@ -91,25 +91,25 @@ export default function ({ handleClose }: IDatasetUploadProps) {
 
         if (datasetTitle.trim() === '') {
             setErrorMsg('Please specify a dataset name!');
-            setStep(1)
+            setStep(1);
             return;
         }
 
         if (datasetDescription.trim() === '') {
             setErrorMsg('Please specify a dataset description!');
-            setStep(1)
+            setStep(1);
             return;
         }
 
         if (!selectedDatasetFiles || !selectedDatasetFiles.length) {
             setErrorMsg('Please select a dataset file!');
-            setStep(1)
+            setStep(1);
             return;
         }
 
         if (datasetType.trim() === '') {
             setErrorMsg('Please specify a dataset type!');
-            setStep(2)
+            setStep(2);
             return;
         }
 
@@ -131,7 +131,7 @@ export default function ({ handleClose }: IDatasetUploadProps) {
 
         if (annotationFile) formData.append('files', annotationFile, annotationFile.name);
         formData.append('includes_annotation_file', annotationFile ? 'true' : 'false');
-        formData.append('is_classification_dataset', isClassificationDataset ? 'true' : 'false')
+        formData.append('is_classification_dataset', isClassificationDataset ? 'true' : 'false');
 
         for (const annotationLabel of annotationLabels) formData.append('annotation_labels', annotationLabel);
 
@@ -180,42 +180,50 @@ export default function ({ handleClose }: IDatasetUploadProps) {
             <DialogTitle>Create new Dataset</DialogTitle>
             <DialogContent>
                 {errorMsg ? <Alert severity="error">{errorMsg}</Alert> : null}
-                {step === 1 ? <GenericInformationDialog
-                    datasetType={datasetType}
-                    setDatasetType={setDatasetType}
-                    datasetTypes={datasetTypes}
-                    setDatasetMetadataSchema={setDatasetMetadataSchema}
-                    datasetTitle={datasetTitle}
-                    setDatasetTitle={setDatasetTitle}
-                    datasetDescription={datasetDescription}
-                    setDatasetDescription={setDatasetDescription}
-                    setSelectedDatasetFiles={setSelectedDatasetFiles}
-                    isClassificationDataset={isClassificationDataset}
-                    setIsClassificationDataset={setIsClassificationDataset}
-                    chosenKeywords={chosenKeywords}
-                    setChosenKeywords={setChosenKeywords}
-                    chosenLocations={chosenLocations}
-                    setChosenLocations={setChosenLocations}
-                    setAnnotationFile={setAnnotationFile}
-                    annotationLabels={annotationLabels}
-                    setAnnotationLabels={setAnnotationLabels}
-                    createInProgress={createInProgress}
-                    createSuccess={createSuccess}
-                /> : <SpecificInformationDialog
-                    datasetTypes={datasetTypes}
-                    datasetMetadata={datasetMetadata}
-                    setDatasetMetadata={setDatasetMetadata}
-                    datasetMetadataSchema={datasetMetadataSchema}
-                    setErrorMsg={setErrorMsg}
-                />}
+                {step === 1 ? (
+                    <GenericInformationDialog
+                        datasetType={datasetType}
+                        setDatasetType={setDatasetType}
+                        datasetTypes={datasetTypes}
+                        setDatasetMetadataSchema={setDatasetMetadataSchema}
+                        datasetTitle={datasetTitle}
+                        setDatasetTitle={setDatasetTitle}
+                        datasetDescription={datasetDescription}
+                        setDatasetDescription={setDatasetDescription}
+                        setSelectedDatasetFiles={setSelectedDatasetFiles}
+                        isClassificationDataset={isClassificationDataset}
+                        setIsClassificationDataset={setIsClassificationDataset}
+                        chosenKeywords={chosenKeywords}
+                        setChosenKeywords={setChosenKeywords}
+                        chosenLocations={chosenLocations}
+                        setChosenLocations={setChosenLocations}
+                        setAnnotationFile={setAnnotationFile}
+                        annotationLabels={annotationLabels}
+                        setAnnotationLabels={setAnnotationLabels}
+                        createInProgress={createInProgress}
+                        createSuccess={createSuccess}
+                    />
+                ) : (
+                    <SpecificInformationDialog
+                        datasetTypes={datasetTypes}
+                        datasetMetadata={datasetMetadata}
+                        setDatasetMetadata={setDatasetMetadata}
+                        datasetMetadataSchema={datasetMetadataSchema}
+                        setErrorMsg={setErrorMsg}
+                    />
+                )}
             </DialogContent>
             <DialogActions>
-                {step === 1 && datasetType.trim() != '' ? <LoadingButton onClick={increaseStep} loading={false}>
+                {step === 1 && datasetType.trim() != '' ? (
+                    <LoadingButton onClick={increaseStep} loading={false}>
                         Add Metadata (Optional)
-                </LoadingButton> : null}
-                {step === 2 ? <LoadingButton onClick={decreaseStep} loading={false}>
+                    </LoadingButton>
+                ) : null}
+                {step === 2 ? (
+                    <LoadingButton onClick={decreaseStep} loading={false}>
                         Previous Step
-                </LoadingButton> : null}
+                    </LoadingButton>
+                ) : null}
                 <LoadingButton onClick={handleUploadButtonClick} loading={isUploading()}>
                     {getButtonText()}
                 </LoadingButton>

@@ -15,7 +15,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 The Webclient for Agri-Gaia powered by React and MaterialUI.
 
-
 ## Troubleshooting
 
 ### Update npm packages (workaround)
@@ -23,4 +22,3 @@ The Webclient for Agri-Gaia powered by React and MaterialUI.
 ```bash
 npm update && npm list --json | jq --slurpfile package package.json 'def replaceVersion($replacements): with_entries(if .value | startswith("^") then .value = ("^" + $replacements[.key].version) else . end); .dependencies as $resolved | reduce ["dependencies", "devDependencies"][] as $deps ($package[0]; if .[$deps] | type == "object" then .[$deps] |= replaceVersion($resolved) else . end)' > package.json~ && mv package.json~ package.json && npm install
 ```
-

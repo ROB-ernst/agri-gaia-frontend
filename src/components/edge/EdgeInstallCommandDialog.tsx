@@ -29,7 +29,7 @@ export default function EdgeInstallCommandDialog({
     edgeDevice: IEdgeDevice;
     handleClose: () => void;
 }) {
-    const edgeInstallCommand = getEdgeInstallCommand(edgeDevice.edge_key)
+    const edgeInstallCommand = getEdgeInstallCommand(edgeDevice.edge_key);
     return (
         <Dialog open={true} onClose={handleClose} maxWidth="xl">
             <DialogTitle>Edge Device Install Command</DialogTitle>
@@ -39,13 +39,16 @@ export default function EdgeInstallCommandDialog({
                         <p>Run this on your Edge Device:</p>
                     </Grid>
                     <Grid item>
-                        <Button onClick={() => navigator.clipboard.writeText(edgeInstallCommand)}  startIcon={<ContentCopyIcon/>}>Copy to Clipboard</Button>
+                        <Button
+                            onClick={() => navigator.clipboard.writeText(edgeInstallCommand)}
+                            startIcon={<ContentCopyIcon />}
+                        >
+                            Copy to Clipboard
+                        </Button>
                     </Grid>
                 </Grid>
                 <Alert severity="success">
-                    <code style={{ display: 'block', whiteSpace: 'pre-wrap' }}>
-                        {edgeInstallCommand}
-                    </code>
+                    <code style={{ display: 'block', whiteSpace: 'pre-wrap' }}>{edgeInstallCommand}</code>
                 </Alert>
             </DialogContent>
             <DialogActions>
